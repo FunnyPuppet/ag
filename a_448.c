@@ -3,33 +3,35 @@
 #include <string.h>
 
 int* findDisappearedNumbers(int* nums, int numsSize, int* returnSize) {
-    int *hash = calloc(numsSize, sizeof(int));
-
     for (int i = 0; i < numsSize; i++) {
-        hash[nums[i] - 1] = 1;
+        int num = nums[i];
+
+        int index = abs(num) - 1;
+
+        if (nums[index] > 0) {
+            nums[index] = -nums[index];
+        }
     }
 
     int *res = malloc(sizeof(int) * numsSize);
     *returnSize = 0;
     for (int i = 0; i < numsSize; i++) {
-        if (hash[i] == 0) {
+        if (nums[i] > 0) {
             res[*returnSize] = i + 1;
             (*returnSize)++;
         }
     }
 
-    free(hash);
-
     return res;
 }
 
 int main() {
-    int nums[] = {1, -2147483648, 2};
+    int nums[] = {4, 3, 2, 7, 8, 2, 3, 1};
     int len = sizeof(nums) / sizeof(nums[0]);
     int returnSize;
     int *res = findDisappearedNumbers(nums, len, &returnSize);
 
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < returnSize; i++) {
         printf("%d ", res[i]);
     }
 
