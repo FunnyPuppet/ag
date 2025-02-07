@@ -3,26 +3,20 @@
 #include <string.h>
 
 char findTheDifference(char* s, char* t) {
-    int hash[26] = {0};
+    int ans = 0;
 
     int len = strlen(s);
 
     for (int i = 0; i < len; i++) {
-        hash[s[i] - 'a']++;
+        ans ^= s[i];
     }
 
     len = strlen(t);
     for (int i = 0; i < len; i++) {
-        hash[t[i] - 'a']--;
+        ans ^= t[i];
     }
 
-    for (int i = 0; i < 26; i++) {
-        if (hash[i] == -1) {
-            return i + 'a';
-        }
-    }
-
-    return 0;
+    return ans;
 }
 
 
