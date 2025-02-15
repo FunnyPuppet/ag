@@ -12,28 +12,19 @@ char* longestPalindrome(char* s) {
     }
 
     int start = 0, max = 0;
-    for (int i = 0; i < len; i++) {
-        int l = i - 1;
-        int r = i + 1;
 
-        while (l >= 0 && s[l] == s[r]) {
-            l--;
-            r++;
-        }
-        if (r - l - 1 > max) {
-            start = l + 1;
-            max = r - l - 1;
-        }
+    int dp[len][len];
+    memset(dp, 0, sizeof(dp));
 
-        l = i;
-        r = i + 1;
-        while (l >= 0 && s[l] == s[r]) {
-            l--;
-            r++;
-        }
-        if (r - l - 1 > max) {
-            start = l + 1;
-            max = r - l - 1;
+    for (int i = len - 1; i >= 0; i--) {
+        for (int j = i; j < len; j++) {
+            if (s[i] == s[j] && (j - i <= 2 || dp[i + 1][j - 1])) {
+                dp[i][j] = 1;
+                if (j - i + 1 > max) {
+                    max = j - i + 1;
+                    start = i;
+                }
+            }
         }
     }
 
