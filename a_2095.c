@@ -10,34 +10,19 @@ struct ListNode {
 };
 
 struct ListNode* deleteMiddle(struct ListNode* head) {
-    int count = 0;
+    struct ListNode *root = malloc(sizeof(struct ListNode));
+    root->next = head;
+    struct ListNode *f = root->next;
+    struct ListNode *s = root;
 
-    struct ListNode* cur = head;
-    while (cur != NULL) {
-        count++;
-        cur = cur->next;
+    while (f != NULL && f->next != NULL) {
+        f = f->next->next;
+        s = s->next;
     }
 
-    if (count == 1) {
-        return NULL;
-    }
+    s->next = s->next->next;
 
-    int n = count / 2;
-
-    struct ListNode* ans = head;
-    struct ListNode* pre = head;
-    cur = head->next;
-
-    for (int i = 0; i < count; i++) {
-        if (i == n - 1) {
-            pre->next = cur == NULL ? cur : cur->next;
-            break;
-        }
-        pre = cur;
-        cur = cur->next;
-    }
-
-    return ans;
+    return root->next;
 }
 
 int main() {
