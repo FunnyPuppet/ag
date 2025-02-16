@@ -10,36 +10,24 @@ struct ListNode {
 };
 
 struct ListNode* removeNthFromEnd(struct ListNode* head, int n) {
-    int count = 0;
+    struct ListNode *root = malloc(sizeof(struct ListNode));
+    root->next = head;
+    struct ListNode *f = root;
+    struct ListNode *s = root;
 
-    struct ListNode* cur = head;
-    while (cur != NULL) {
-        count++;
-        cur = cur->next;
+    while (n >= 0) {
+        f = f->next;
+        n--;
     }
 
-    if (count == 1) {
-        return NULL;
+    while (f != NULL) {
+        f = f->next;
+        s = s->next;
     }
 
-    if (count == n) {
-        return head->next;
-    }
+    s->next = s->next->next;
 
-    struct ListNode* ans = head;
-    struct ListNode* pre = head;
-    cur = head->next;
-
-    for (int i = 0; i < count; i++) {
-        if (i == count - n) {
-            pre->next = cur->next;
-            break;
-        }
-        pre = cur;
-        cur = cur->next;
-    }
-
-    return ans;
+    return root->next;
 }
 
 int main() {
