@@ -19,12 +19,8 @@ public:
 
         for (int i = 0; i <= n - 10; i++) {
             string t = s.substr(i, 10);
-            map[t]++;
-        }
-
-        for (const auto& pair : map) {
-            if (pair.second > 1) {
-                ans.push_back(pair.first);
+            if (++map[t] == 2) {
+                ans.push_back(t);
             }
         }
 
