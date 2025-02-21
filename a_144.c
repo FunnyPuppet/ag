@@ -10,20 +10,28 @@ struct TreeNode {
     struct TreeNode *right;
 };
 
-void addNode(struct TreeNode* node, int *ans, int* returnSize) {
-    if (node != NULL) {
-        ans[*returnSize] = node->val;
-        (*returnSize)++;
-        addNode(node->left, ans, returnSize);
-        addNode(node->right, ans, returnSize);
-    }
-}
-
 int* preorderTraversal(struct TreeNode* root, int* returnSize) {
     int *ans = malloc(sizeof(int) * 100);
 
-    *returnSize = 0;
-    addNode(root, ans, returnSize);
+    struct TreeNode *stack[100];
+    stack[0] = root;
+    int top = 0;
+
+    while (top >= 0) {
+        struct TreeNode *node = stack[top--];
+        if (node != NULL) {
+            ans[*returnSize] = node->val;
+            (*returnSize)++;
+
+            if (node->right != NULL) {
+                stack[++top] = node->right;
+            }
+
+            if (node->left != NULL) {
+                stack[++top] = node->left;
+            }
+        }
+    }
 
     return ans;
 }
