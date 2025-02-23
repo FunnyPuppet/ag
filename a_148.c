@@ -5,69 +5,30 @@
 #include <ctype.h>
 #include "list_node.h"
 
-void merge(struct ListNode **arr, int left, int mid, int right) {
-    int p = left, q = mid + 1, len = right - left + 1;
-    int pos = 0;
-    struct ListNode **temp = malloc(sizeof(struct ListNode*) * len);
-
-    while (p <= mid && q <= right) {
-        if (arr[p]->val < arr[q]->val) {
-            temp[pos++] = arr[p++];
-        } else {
-            temp[pos++] = arr[q++];
-        }
-    }
-
-    while (p <= mid) {
-        temp[pos++] = arr[p++];
-    }
-
-    while (q <= right) {
-        temp[pos++] = arr[q++];
-    }
-
-    pos = 0;
-    while (pos < len) {
-       arr[left++] = temp[pos++];
-    }
-
-    free(temp);
-}
-
-void mergeSort(struct ListNode **arr, int left, int right) {
-    if (left < right) {
-        int mid = left + (right - left) / 2;
-        mergeSort(arr, left, mid);
-        mergeSort(arr, mid + 1, right);
-
-        merge(arr, left, mid, right);
-    }
+int compareInt(const void* a, const void* b) {
+    return *(int*)a - *(int*)b;
 }
 
 struct ListNode* sortList(struct ListNode* head) {
     if (head == NULL) return head;
     int cnt = 0;
 
-    struct ListNode **arr = malloc(sizeof(struct ListNode*) * 500000);
+    int arr[500000];
     struct ListNode* cur = head;
     while (cur != NULL) {
-        arr[cnt++] = cur;
+        arr[cnt++] = cur->val;
         cur = cur->next;
     }
 
-    mergeSort(arr, 0, cnt - 1);
+    qsort(arr, cnt, sizeof(int), compareInt);
 
-    struct ListNode* P = malloc(sizeof(struct ListNode));
-    cur = P;
+    cur = head;
     for (int i = 0; i < cnt; i++) {
-        arr[i]->next = NULL;
-        cur->next = arr[i];
+        cur->val = arr[i];
         cur = cur->next;
     }
 
-    free(arr);
-
-    return P->next;
+    return head;
 }
 
 int main() {
