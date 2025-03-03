@@ -12,18 +12,25 @@ struct Node {
     struct Node *next;
 };
 
-void dfs(struct Node *node) {
-    if (node != NULL) {
-        if (node->left != NULL) {
-            node->left->next = node->right;
-        }
+void bfs(struct Node** nodes, int size) {
+    if (size > 0) {
+        struct Node** arr = malloc(sizeof(struct Node*) * (size * 2));
+        int len = 0;
+        for (int i = 0; i < size; i++) {
+            struct Node* node = nodes[i];
+            if (i != size - 1) {
+                node->next = nodes[i + 1];
+            }
 
-        if (node->next != NULL && node->right != NULL) {
-            node->right->next = node->next->left;
+            if (node->left != NULL)
+                arr[len++] = node->left;
+            if (node->right != NULL)
+                arr[len++] = node->right;
         }
-
-        dfs(node->left);
-        dfs(node->right);
+        free(nodes);
+        bfs(arr, len);
+    } else {
+        free(nodes);
     }
 }
 
@@ -32,7 +39,10 @@ struct Node* connect(struct Node* root) {
         return NULL;
     }
 
-    dfs(root);
+    struct Node** nodes = malloc(sizeof(struct Node*) * 1);
+    nodes[0] = root;
+
+    bfs(nodes, 1);
 
     return root;
 }
