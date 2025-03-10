@@ -6,23 +6,15 @@
 #include <math.h>
 
 int divisorSubstrings(int num, int k) {
-    char str[20];
-    sprintf(str, "%d", num);
-
-    int n = strlen(str);
     int ans = 0;
-    for (int i = 0; i <= n - k; i++) {
-        char substr[k + 1];
-
-        strncpy(substr, str + i, k);
-        substr[k] = '\0';
-
-        int tn = atoi(substr);
-        if (tn != 0 && num % tn == 0) {
+    int i = num;
+    while(i >= pow(10,k-1)){
+        int t = i % (int)pow(10,k);
+        if(t != 0 && num % t == 0) {
             ans++;
         }
+        i /= 10;
     }
-
     return ans;
 }
 
